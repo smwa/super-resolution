@@ -84,7 +84,7 @@ def upload_file():
       return send_file(
         buf,
         mimetype='image/png',
-        as_attachment=False,
+        as_attachment=True,
         download_name=filename)
   return '''
   <!doctype html>
