@@ -44,9 +44,17 @@ def load_image(file: io.BytesIO) -> np.array:
   return np.array(Image.open(file))
 
 def super_resolution_png(low_resolution_image_file: io.BytesIO) -> io.BytesIO:
+  print("super resolution function entered")
   lr = np.array(Image.open(low_resolution_image_file))
+  print("low resolution loaded")
+  model = edsr(scale=4, num_res_blocks=16)
+  print("edsr object created")
+  model.load_weights('weights/edsr-16-x4/weights.h5')
+  print("model loaded")
   sr = resolve_single(model, lr)
+  print("single resolved")
   img = Image.fromarray(sr.numpy(), 'RGB')
+  print("image loaded")
   byteIO = io.BytesIO()
   img.save(byteIO, format='PNG')
   return byteIO
@@ -92,8 +100,3 @@ def upsample(x, scale, num_filters):
         x = upsample_1(x, 2, name='conv2d_2_scale_2')
 
     return x
-
-
-
-model = edsr(scale=4, num_res_blocks=16)
-model.load_weights('weights/edsr-16-x4/weights.h5')

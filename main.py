@@ -65,7 +65,7 @@ def upload_file():
       buf.seek(0)
       print("Squared")
 
-      print("Super rezing")
+      print("Super rezing1")
       sr_bytes_png = super_resolution_png(buf).getvalue()
       print("Super resolution done")
       buf = io.BytesIO(sr_bytes_png)
