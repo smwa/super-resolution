@@ -44,11 +44,10 @@ def upload_file():
         print("opened")
         jpgimg = jpgimg.convert('RGB')
         print("converted")
-        pngbuf = io.BytesIO()
+        buf = io.BytesIO()
         print("new object created")
-        jpgimg.save(pngbuf, format='PNG')
-        print("saved")
-        buf = pngbuf
+        jpgimg.save(buf, format='PNG')
+        buf.seek(0)
 
       # Make image a square
       print("Squaring")
@@ -61,7 +60,9 @@ def upload_file():
       tmpimg = Image.new(img.mode, (max_dimension, max_dimension), BLACK)
       tmpimg.paste(img, (0, 0))
       img = tmpimg
+      buf = io.BytesIO()
       img.save(buf, format="PNG")
+      buf.seek(0)
       print("Squared")
 
       print("Super rezing")
@@ -76,7 +77,9 @@ def upload_file():
         img = img.crop((0, 0, width, int(height / ratio)))
       else:
         img = img.crop((0, 0, (width * ratio), height))
-      img.save(buf)
+      buf = io.BytesIO()
+      img.save(buf, format="PNG")
+      buf.seek(0)
 
       return send_file(
         buf,
